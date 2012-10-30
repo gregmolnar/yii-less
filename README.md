@@ -14,14 +14,14 @@ Usage
 In your config file register the extension:
 ```php
 'behaviors'=>array(
-      'ext.less.components.LessCompilationBehavior',
+      'ext.yii-less.components.LessCompilationBehavior',
 ),
 ```
 In your config file register your less files to precompile:
 ```php
 'components'=>array(
   'lessCompiler'=>array(
-    'class'=>'ext.less.components.LessCompiler',
+    'class'=>'ext.yii-less.components.LessCompiler',
     'paths'=>array(
       // you will access to the compiled file on this path
       'css/bootstrap.css' => array(
