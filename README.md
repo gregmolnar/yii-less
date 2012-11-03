@@ -41,6 +41,10 @@ Additional Information
 This extension is heavily based on Crisu83's extension: http://www.yiiframework.com/extension/less/.
 I changed how the configuration works so they are not compatible and that's the reason for the fork. I hope he doesn't mind.
 
-Contribution
+Contributing
 ------------
-Pull requests are welcomed.
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
