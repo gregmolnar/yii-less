@@ -22,8 +22,10 @@ class LessCompilationBehavior extends CBehavior
 	/**
 	 * Actions to take before doing the request.
 	 */
-	public function beginRequest()
+	public function beginRequest($event)
 	{
-		$this->owner->lessCompiler->compile();
+		if(preg_match('/(.*)+\.css$/', $_SERVER['REQUEST_URI'])){
+			$this->owner->lessCompiler->compile($_SERVER['REQUEST_URI']);
+		}
 	}
 }

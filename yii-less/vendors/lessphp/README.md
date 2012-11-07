@@ -1,64 +1,96 @@
-less.php
-========
+# lessphp v0.3.7
+### <http://leafo.net/lessphp>
 
-The **dynamic** stylesheet language.
+[![Build Status](https://secure.travis-ci.org/leafo/lessphp.png)](http://travis-ci.org/leafo/lessphp)
 
-<http://lesscss.org>
+`lessphp` is a compiler for LESS written in PHP. The documentation is great,
+so check it out: <http://leafo.net/lessphp/docs/>.
 
-about
------
+Here's a quick tutorial:
 
-This is a PHP port of the official JavaScript version of LESS <http://lesscss.org>.
+### How to use in your PHP project
 
-Most of the code structure remains the same, which should allow for fairly easy updates in the future. That does
-mean this library requires PHP5.3 as it makes heavy use of namespaces, anonymous functions and the shorthand ternary
-operator - `?:` (to replicate the way Javascript will return the value of the first valid operand when using  `||`).
+The only file required is `lessc.inc.php`, so copy that to your include directory.
 
-A couple of things have been omitted from this initial version:
+The typical flow of **lessphp** is to create a new instance of `lessc`,
+configure it how you like, then tell it to compile something using one built in
+compile methods.
 
-- Evaluation of JavaScript expressions within back-ticks (for obvious reasons).
-- Definition of custom functions - will be added to the `\Less\Environment` class.
-- A tidy up of the API is needed.
-
-use
----
-
-### The parser
+The `compile` method compiles a string of LESS code to CSS.
 
 ```php
 <?php
+require "lessc.inc.php";
 
-$parser = new \Less\Parser();
-$parser->getEnvironment()->setCompress(true);
-
-// parse css from a less source file or directly from a string
-$css = $parser
-            ->parseFile($path)
-            ->parse("@color: #4D926F; #header { color: @color; } h2 { color: @color; }")
-            ->getCss();
+$less = new lessc;
+echo $less->compile(".block { padding: 3 + 4px }");
 ```
 
-### The command line tool
+The `compileFile` method reads and compiles a file. It will either return the
+result or write it to the path specified by an optional second argument.
 
-The `bin/lessc` command line tool will accept an input (and optionally an output) file name to process.
-
-```bash
-$ ./bin/lessc input.less output.css
+```php
+<?php
+echo $less->compileFile("input.less");
 ```
 
-### In your website
+The `compileChecked` method is like `compileFile`, but it only compiles if the output
+file doesn't exist or it's older than the input file:
 
-The `bin/less.php` file can be moved to the directory containing your less source files. Including a links as follows
-will compile and cache the css.
-
-```html
-<link rel="stylesheet" type="text/css" href="/static/less/css.php?bootstrap.less" />
+```php
+<?php
+$less->checkedCompile("input.less", "output.css");
 ```
 
-NB: You'll need to update this file to point to the `lib` directory, and also make sure the `./cache` directory is
-writable by the web server.
+If there any problem compiling your code, an exception is thrown with a helpful message:
 
-license
--------
+```php
+<?php
+try {
+  $less->compile("invalid LESS } {");
+} catch (exception $e) {
+  echo "fatal error: " . $e->getMessage();
+}
+```
 
-See `LICENSE` file.
+The `lessc` object can be configured through an assortment of instance methods.
+Some possible configuration options include [changing the output format][1],
+[setting variables from PHP][2], and [controlling the preservation of
+comments][3], writing [custom functions][4] and much more. It's all described
+in [the documentation][0].
+
+
+ [0]: http://leafo.net/lessphp/docs/
+ [1]: http://leafo.net/lessphp/docs/#output_formatting
+ [2]: http://leafo.net/lessphp/docs/#setting_variables_from_php
+ [3]: http://leafo.net/lessphp/docs/#preserving_comments
+ [4]: http://leafo.net/lessphp/docs/#custom_functions
+
+
+### How to use from the command line
+
+An additional script has been included to use the compiler from the command
+line. In the simplest invocation, you specify an input file and the compiled
+css is written to standard out:
+
+    $ plessc input.less > output.css
+
+Using the -r flag, you can specify LESS code directly as an argument or, if 
+the argument is left off, from standard in:
+
+    $ plessc -r "my less code here"
+
+Finally, by using the -w flag you can watch a specified input file and have it 
+compile as needed to the output file:
+
+    $ plessc -w input-file output-file
+
+Errors from watch mode are written to standard out.
+
+The -f flag sets the [output formatter][1]. For example, to compress the
+output run this:
+
+    $ plessc -f=compressed myfile.less
+
+For more help, run `plessc --help`
+

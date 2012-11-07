@@ -1,8 +1,8 @@
-.buildpath
-.project
-.settings
-.idea
-.DS_Store?
-ehthumbs.db
-Icon?
-Thumbs.db
+*.swp
+*~
+/*.less
+/*.css
+tests/bootstrap
+tests/tmp
+vendor
+composer.lock
