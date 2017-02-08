@@ -26,6 +26,7 @@ In your config file register your less files to precompile:
       // you can access to the compiled file on this path
       'css/bootstrap.css' => array(
         'precompile' => true, // whether you want to cache the generation
+        'compressed' => true, // Will pass the compressed option to the less compiler - Compresses all the unrequired whitespace - Defaults to false 
         'paths' => array('less/bootstrap.less') //paths of less files. you can specify multiple files.
       ),
     ),
