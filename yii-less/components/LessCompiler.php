@@ -34,7 +34,7 @@ class LessCompiler extends CApplicationComponent
 		if (!file_exists($this->basePath))
 			throw new CException(__CLASS__.': '.Yii::t('less','Failed to initialize compiler. Base path does not exist!'));
 
-		$this->_parser = new lessc;;
+		$this->_parser = new lessc;
 	}
 
 	/**
@@ -54,6 +54,8 @@ class LessCompiler extends CApplicationComponent
 					$fromPath = $this->basePath.'/'.$fromPath;				
 					if (file_exists($fromPath)){
 						try {
+							if(isset($less['compressed']) and $less['compressed'])
+								$this->_parser->setFormatter("compressed");	
 						  $css .= $this->_parser->compileFile($fromPath);
 						} catch (exception $e) {
 						  throw new CException(__CLASS__.': '.Yii::t('less','Failed to compile less file with message: `{message}`.', array('{message}'=>$e->getMessage())));
