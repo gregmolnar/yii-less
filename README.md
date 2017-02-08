@@ -36,6 +36,11 @@ Register your asset in your layout:
 ```php
 Yii::app()->clientScript->registerCssFile('css/bootstrap.css')
 ```
+If you are using the precompile option, it will set the expires header to 1 week. To bust the cache automatically, add a version number to the end of the file path when modifying the LESS file. 
+
+```php
+Yii::app()->clientScript->registerCssFile('css/bootstrap.css?v=1.0.1')
+``` 
 Additional Information
 ----------------------
 This extension is heavily based on Crisu83's extension: http://www.yiiframework.com/extension/less/.
