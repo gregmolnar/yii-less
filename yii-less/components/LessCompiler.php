@@ -34,7 +34,7 @@ class LessCompiler extends CApplicationComponent
 		if (!file_exists($this->basePath))
 			throw new CException(__CLASS__.': '.Yii::t('less','Failed to initialize compiler. Base path does not exist!'));
 
-		$this->_parser = new lessc;;
+		$this->_parser = new lessc;
 	}
 
 	/**
