@@ -43,11 +43,15 @@ class LessCompiler extends CApplicationComponent
 	 */
 	public function compile($path)
 	{
+		$original_path = $path;
+		$path_array = explode('?', $path); 
+		$path = $path_array[0];
 		if(array_key_exists($path, $this->paths)){
 			$less = $this->paths[$path];
-			$cache_path = Yii::app()->assetManager->basePath.'/'.md5($path).'.css';
+			$cache_path = Yii::app()->assetManager->basePath.'/'.md5($original_path).'.css';
 			if(isset($less['precompile']) and $less['precompile'] and file_exists($cache_path)){
 				$css = file_get_contents($cache_path);
+				header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', strtotime("+1 week")));
 			}else{
 				$css = '';
 				foreach($less['paths'] as $fromPath){
